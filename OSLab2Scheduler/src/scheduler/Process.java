@@ -17,11 +17,17 @@ public class Process implements Comparable<Process> {
 	//finishing time of process
 	protected int finishingTime;
 	
+	//total finishing time of process
+	protected int totalFinishingTime;
+	
 	//turnaround time of process
 	protected int turnaroundTime;
 	
 	//input/ouput time of process
 	protected int inputOutputTime;
+	
+	//total input/output time of process
+	protected int totalInputOutputTime;
 	
 	//waiting time of process
 	protected int waitingTime;

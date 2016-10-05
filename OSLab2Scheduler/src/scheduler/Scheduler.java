@@ -76,7 +76,7 @@ public class Scheduler {
 		//print all processes
 		for(int i = 0; i < processes.size(); i++) {
 			
-			System.out.println("Process " + i + ": "  + processes.get(i).arrivalTime + ", " + processes.get(i).cpuBurst + ", " + processes.get(i).cpuTime + ", " + processes.get(i).multiplier);
+			//System.out.println("Process " + i + ": "  + processes.get(i).arrivalTime + ", " + processes.get(i).cpuBurst + ", " + processes.get(i).cpuTime + ", " + processes.get(i).multiplier);
 			
 		}
 		
@@ -87,6 +87,9 @@ public class Scheduler {
 	
 	
 	public static void firstComeFirstServe(ArrayList<Process> processes) {
+		
+		//initialize an array list for terminated processes
+		ArrayList<Process> terminatedProcesses = new ArrayList<Process>();
 		
 		//create queue for ready processes
 		Queue<Process> ready = new LinkedList<Process>();
@@ -101,14 +104,22 @@ public class Scheduler {
 			
 		}
 		
+		for(int i = 0; i < ready.size(); i++) {
+			
+			//TEST
+			//System.out.println("Size of ready: " + ready.size());
+			//System.out.println("Process " + i + " arrival time: " + ready.remove().arrivalTime);
+			
+		}
+				
 		//count the number of terminated processes
 		int finishedProcesses = 0;
 		
 		//while all processes have not terminated
 		while(finishedProcesses != processes.size()) {
-			
-			//while ready list of processes is not empty
-			while(!ready.isEmpty()) {
+
+			//while ready list and blocked list of processes are not empty
+			while((!ready.isEmpty()) || (!blocked.isEmpty())) {
 				
 				//store current process
 				Process currentProcess = ready.remove();
@@ -127,6 +138,29 @@ public class Scheduler {
 				
 				//increment current process' finishing time
 				currentProcess.finishingTime += burst;
+
+				//if the required cpu time of current process is 0
+				if(currentProcess.cpuTime <= 0) {
+					
+					//add current process to terminated processes
+					terminatedProcesses.add(currentProcess);
+					
+					//remove current process from ready list
+					ready.remove(currentProcess);
+					
+					//increment finished processes
+					finishedProcesses++;
+					
+					if(finishedProcesses == processes.size()) {
+						
+						break;
+						
+					}
+					
+					//TEST
+					//System.out.println("number of finished processes: " + finishedProcesses);
+					
+				}				
 				
 				//set current processes' I/O time to burst times its multiplier
 				currentProcess.inputOutputTime = burst * currentProcess.multiplier;
@@ -170,8 +204,27 @@ public class Scheduler {
 			
 		}
 		
+		//print formated output of first come first serve scheduling algorithm
+		printFirstComeFirstServe(terminatedProcesses);
 		
 		 
+	}
+
+
+	private static void printFirstComeFirstServe(ArrayList<Process> terminatedProcesses) {
+
+		for(int i = 0; i < terminatedProcesses.size(); i++) {
+			
+			System.out.println("Process " + i + ":");
+			System.out.println("(A, B, C, M) = (" + terminatedProcesses.get(i).arrivalTime + ", " + terminatedProcesses.get(i).cpuBurst + ", " + terminatedProcesses.get(i).cpuTime + ", " + terminatedProcesses.get(i).multiplier + ")");
+			System.out.println("Finishing time: " + terminatedProcesses.get(i).finishingTime);
+			System.out.println("Turnaround time: " + (terminatedProcesses.get(i).finishingTime - terminatedProcesses.get(i).arrivalTime));
+			System.out.println("I/O time: " + terminatedProcesses.get(i).inputOutputTime);
+			System.out.println("Waiting time: " + terminatedProcesses.get(i).waitingTime);
+			System.out.println();
+			
+		}
+		
 	}
 
 
@@ -196,13 +249,13 @@ public class Scheduler {
 		}
 		
 		//TEST
-		System.out.println("cpuBurst is " + cpuBurst);
-		System.out.println("number from random-numbers is " + randomOSScanner.nextInt());
+		//System.out.println("cpuBurst is " + cpuBurst);
+		//System.out.println("number from random-numbers is " + randomOSScanner.nextInt());
 		
 		int burst = 1 + (randomOSScanner.nextInt() % cpuBurst);
 		
 		//TEST
-		System.out.println("current CPU burst is " + burst);
+		//System.out.println("current CPU burst is " + burst);
 		
 		return burst;
 		
