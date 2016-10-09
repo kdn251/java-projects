@@ -2,6 +2,8 @@ package scheduler;
 
 public class Process implements Comparable<Process> {
 	
+	boolean added = false;
+	
 	//arrival time of process
 	protected int arrivalTime;
 	
@@ -35,6 +37,8 @@ public class Process implements Comparable<Process> {
 	
 	Process() {
 		
+		
+		this.added = false;
 		//default constructor
 		
 	}
