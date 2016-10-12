@@ -69,6 +69,8 @@ public class Scheduler {
 				
 				processes.add(newProcess);
 				
+				newProcess.cpuTimeCopy = newProcess.cpuTime;
+				
 			}
 			
 
@@ -166,7 +168,7 @@ public class Scheduler {
 								
 				int burst = randomOS(currentProcess.cpuBurst, randomOSScanner);
 				
-				System.out.println("Burst: " + burst);
+				//System.out.println("Burst: " + burst);
 				
 				//if the burst is greater than remaining cpu time set burst equal to remaining cpu time
 				if(burst > currentProcess.cpuTime) {
@@ -224,15 +226,17 @@ public class Scheduler {
 					//if the process' I/O time has finished
 					if(process.inputOutputTime <= burst) {
 
-						process.inputOutputTime = 0;
-
 						//increment current process' finishing time
 						process.finishingTime += burst;
 
 						//System.out.println("Finishing time is currently: " + currentProcess.finishingTime);
 
 						//process.totalInputOutputTime += burst;
+						
+						process.waitingTime += burst - process.inputOutputTime; //THIS MIGHT BE WRONG, MAYBE REMOVE IT, MIGHT NOT BE CAUSING WAITING TIME BUG
 
+						process.inputOutputTime = 0;
+						
 						//blocked.remove(process);
 						blockedToRemove.add(process);
 
@@ -270,14 +274,14 @@ public class Scheduler {
 					
 					if(process.arrivalTime <= totalRunTime && process.added != true) {
 						
-						System.out.println("KEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVIN");
+						//System.out.println("KEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVINKEVIN");
 						
 						ready.add(process);
 						process.finishingTime = totalRunTime;
 						process.waitingTime = totalRunTime - process.arrivalTime; //BUG: if process arrives while a process is running, set it's waiting time accordingly
 						process.added = true;
 						
-						System.out.println("WAIT TIME IS: " + process.waitingTime);
+						//System.out.println("WAIT TIME IS: " + process.waitingTime);
 						
 					}
 					
@@ -321,7 +325,7 @@ public class Scheduler {
 
 					//System.out.println("I/O time is " + currentProcess.inputOutputTime);
 					
-					System.out.println();
+					//System.out.println();
 
 					//increment current process' total I/O time
 					//currentProcess.totalInputOutputTime += burst * currentProcess.multiplier;				
@@ -373,15 +377,17 @@ public class Scheduler {
 					for(Process currentProcess : processes) {
 						
 						if(currentProcess.arrivalTime <= totalRunTime && currentProcess.added != true) {
-							System.out.println("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+							
+							//System.out.println("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+							
 							ready.add(currentProcess);
 							currentProcess.finishingTime = totalRunTime;
 							currentProcess.waitingTime = totalRunTime - currentProcess.arrivalTime; //BUG: if process arrives while a process is running, set it's waiting time accordingly
 							
 							//TEST
-							System.out.println("ARRIVAL TIME IS: " + currentProcess.arrivalTime);
-							System.out.println("TOTAL RUN TIME IS: " + totalRunTime);
-							System.out.println("WAIT TIME IS: " + currentProcess.waitingTime);
+							//System.out.println("ARRIVAL TIME IS: " + currentProcess.arrivalTime);
+							//System.out.println("TOTAL RUN TIME IS: " + totalRunTime);
+							//System.out.println("WAIT TIME IS: " + currentProcess.waitingTime);
 									
 							currentProcess.added = true;
 							
@@ -402,10 +408,12 @@ public class Scheduler {
 			
 		}
 		
-		System.out.println("TERMINATED PROCESSES SIZE: " + processes.size());
+		//System.out.println("TERMINATED PROCESSES SIZE: " + processes.size());
 		
+		System.out.println();
+
+		System.out.println("The scheduling algorithm used was First Come First Serve");
 		
-		System.out.println("The scheduling algorithm used was Uniprogrammed");
 		
 		//print formated output of first come first serve scheduling algorithm
 		printResults(processes);
@@ -766,6 +774,8 @@ public class Scheduler {
 					//if the process' I/O time has finished
 					if(process.inputOutputTime <= burst) {
 
+						process.waitingTime += burst - process.inputOutputTime; //THIS MIGHT BE WRONG, MAYBE REMOVE IT, MIGHT NOT BE CAUSING WAITING TIME BUG
+						
 						process.inputOutputTime = 0;
 
 						//increment current process' finishing time
@@ -985,9 +995,7 @@ public class Scheduler {
 			System.out.print(" ("  + process.arrivalTime + " " + process.cpuBurst + " " + process.cpuTime + " " + process.multiplier + ") ");
 			
 		}
-		
-		System.out.println();
-		
+				
 		//initialize an array list for terminated processes
 		ArrayList<Process> terminatedProcesses = new ArrayList<Process>();
 		
@@ -1044,11 +1052,12 @@ public class Scheduler {
 			
 				//store current process
 				Process currentProcess = ready.get(min);
+				
 				ready.remove(min);
 								
 				int burst = randomOS(currentProcess.cpuBurst, randomOSScanner);
 				
-				System.out.println("Burst: " + burst);
+				//System.out.println("Burst: " + burst);
 				
 				//if the burst is greater than remaining cpu time set burst equal to remaining cpu time
 				if(burst > currentProcess.cpuTime) {
@@ -1106,6 +1115,8 @@ public class Scheduler {
 					//if the process' I/O time has finished
 					if(process.inputOutputTime <= burst) {
 
+						process.waitingTime += burst - process.inputOutputTime; //THIS MIGHT BE WRONG, MAYBE REMOVE IT, MIGHT NOT BE CAUSING WAITING TIME BUG
+						
 						process.inputOutputTime = 0;
 
 						//increment current process' finishing time
@@ -1310,7 +1321,7 @@ public class Scheduler {
 		for(int i = 0; i < terminatedProcesses.size(); i++) {
 			
 			System.out.println("Process " + i + ":");
-			System.out.println("(A, B, C, M) = (" + terminatedProcesses.get(i).arrivalTime + ", " + terminatedProcesses.get(i).cpuBurst + ", " + terminatedProcesses.get(i).cpuTime + ", " + terminatedProcesses.get(i).multiplier + ")");
+			System.out.println("(A, B, C, M) = (" + terminatedProcesses.get(i).arrivalTime + ", " + terminatedProcesses.get(i).cpuBurst + ", " + terminatedProcesses.get(i).cpuTimeCopy + ", " + terminatedProcesses.get(i).multiplier + ")");
 			System.out.println("Finishing time: " + terminatedProcesses.get(i).finishingTime);
 			System.out.println("Turnaround time: " + (terminatedProcesses.get(i).finishingTime - terminatedProcesses.get(i).arrivalTime));
 			System.out.println("I/O time: " + terminatedProcesses.get(i).totalInputOutputTime);

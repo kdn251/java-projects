@@ -13,6 +13,9 @@ public class Process implements Comparable<Process> {
 	//total cpu time required by process
 	protected int cpuTime;
 	
+	//copy of cpu time remaining
+	protected int cpuTimeCopy;
+	
 	//multiplier of process
 	protected int multiplier;
 	
