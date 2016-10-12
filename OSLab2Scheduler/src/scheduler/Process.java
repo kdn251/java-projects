@@ -13,6 +13,12 @@ public class Process implements Comparable<Process> {
 	//total cpu time required by process
 	protected int cpuTime;
 	
+	//current burst time of process
+	protected int burst;
+	
+	//current blocked time of process
+	protected int blocked;
+	
 	//copy of cpu time remaining
 	protected int cpuTimeCopy;
 	
@@ -37,11 +43,12 @@ public class Process implements Comparable<Process> {
 	//waiting time of process
 	protected int waitingTime;
 	
+	//current state of process
+	protected String currentState = "unstarted";
+	
 	
 	Process() {
 		
-		
-		this.added = false;
 		//default constructor
 		
 	}
@@ -86,6 +93,5 @@ public class Process implements Comparable<Process> {
 		}
 
 	}
-	
 	
 }
