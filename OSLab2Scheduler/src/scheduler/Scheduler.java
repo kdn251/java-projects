@@ -89,13 +89,13 @@ public class Scheduler {
 		firstComeFirstServed(processesFirstComeFirstServed, randomOSScannerFirstComeFirstServed);
 				
 		//run uniprogrammed scheduling algorithm on all processes
-		uniprogrammed(processesUniprogrammed, randomOSScannerUniprogrammed);
+		//uniprogrammed(processesUniprogrammed, randomOSScannerUniprogrammed);
 		
 		//run round robin scheduling algorithm on all processes
-		roundRobin(processesRoundRobin, randomOSScannerRoundRobin);
+		//roundRobin(processesRoundRobin, randomOSScannerRoundRobin);
 		
 		//run shortest job first scheduling algorithm on all processes
-		shortestJobFirst(processesShortestJobFirst, randomOSScannerShortestJobFirst);
+		//shortestJobFirst(processesShortestJobFirst, randomOSScannerShortestJobFirst);
 	
 	}
 	
@@ -117,6 +117,17 @@ public class Scheduler {
 		ready.add(processes.get(0));
 		processes.get(0).added = true;
 		
+		int count = 0;
+		
+		System.out.println();
+		
+		if(VERBOSE_FLAG) {
+		
+			printVerbose(count, processes);
+			count++;
+		
+		}
+		
 		//if any process has the same arrival time as the first process add it to ready
 		for(int i = 1; i < processes.size(); i++) {
 			
@@ -132,16 +143,6 @@ public class Scheduler {
 				
 		//count the number of terminated processes
 		int finishedProcesses = 0;
-		
-		int count = 0;
-		
-		System.out.println();
-		
-		if(VERBOSE_FLAG) {
-		
-			printVerbose(count, processes);
-		
-		}
 		
 		//while all processes have not terminated
 		while(finishedProcesses != processes.size()) {
@@ -160,9 +161,9 @@ public class Scheduler {
 				
 				if(VERBOSE_FLAG) {
 
+					printVerbose(count, processes);
 					count++;
 
-					printVerbose(count, processes);
 
 				}
 								
@@ -246,6 +247,7 @@ public class Scheduler {
 						process.finishingTime = totalRunTime;
 						process.waitingTime = totalRunTime - process.arrivalTime; //BUG: if process arrives while a process is running, set it's waiting time accordingly
 						process.added = true;
+						process.currentState = "ready";
 												
 					}
 					
@@ -339,6 +341,7 @@ public class Scheduler {
 							currentProcess.finishingTime = totalRunTime;
 							currentProcess.waitingTime = totalRunTime - currentProcess.arrivalTime;
 							currentProcess.added = true;
+							currentProcess.currentState = "ready";
 							
 						}
 						
@@ -383,6 +386,14 @@ public class Scheduler {
 		ready.add(processes.get(0));
 		processes.get(0).added = true;
 		
+		int count = 0;
+		
+		if(VERBOSE_FLAG) {
+			
+			printVerbose(count, processes);
+			
+		}	
+		
 		//if any process has the same arrival time as the first process add it to ready
 		for(int i = 1; i < processes.size(); i++) {
 			
@@ -398,14 +409,6 @@ public class Scheduler {
 				
 		//count the number of terminated processes
 		int finishedProcesses = 0;
-		
-		int count = 0;
-		
-		if(VERBOSE_FLAG) {
-			
-			printVerbose(count, processes);
-			
-		}	
 		
 		//while all processes have not terminated
 		while(finishedProcesses != processes.size()) {
@@ -470,6 +473,7 @@ public class Scheduler {
 						process.finishingTime = totalRunTime;
 						process.waitingTime = totalRunTime - process.arrivalTime; //BUG: if process arrives while a process is running, set it's waiting time accordingly
 						process.added = true;
+						process.currentState = "ready";
 												
 					}
 					
@@ -562,6 +566,16 @@ public class Scheduler {
 		ready.add(processes.get(0));
 		processes.get(0).added = true;
 		
+		int count = 0;
+		
+		System.out.println();
+				
+		if(VERBOSE_FLAG) {
+		
+			printVerbose(count, processes);
+		
+		}
+		
 		//if any process has the same arrival time as the first process add it to ready
 		for(int i = 1; i < processes.size(); i++) {
 			
@@ -577,16 +591,6 @@ public class Scheduler {
 				
 		//count the number of terminated processes
 		int finishedProcesses = 0;
-		
-		int count = 0;
-		
-		System.out.println();
-				
-		if(VERBOSE_FLAG) {
-		
-			printVerbose(count, processes);
-		
-		}
 		
 		//while all processes have not terminated
 		while(finishedProcesses != processes.size()) {
@@ -832,6 +836,16 @@ public class Scheduler {
 		ready.add(processes.get(0));
 		processes.get(0).added = true;
 		
+		int count = 0;
+		
+		System.out.println();
+		
+		if(VERBOSE_FLAG) {
+		
+			printVerbose(count, processes);
+		
+		}
+		
 		//if any process has the same arrival time as the first process add it to ready
 		for(int i = 1; i < processes.size(); i++) {
 			
@@ -847,16 +861,6 @@ public class Scheduler {
 				
 		//count the number of terminated processes
 		int finishedProcesses = 0;
-		
-		int count = 0;
-		
-		System.out.println();
-		
-		if(VERBOSE_FLAG) {
-		
-			printVerbose(count, processes);
-		
-		}
 		
 		//while all processes have not terminated
 		while(finishedProcesses != processes.size()) {
@@ -1175,14 +1179,16 @@ public class Scheduler {
 				}
 				
 				else if(process.currentState == "running") {
-					
+
 					number = process.burst;
+					process.burst--; //MIGHT NEED TO DELETE THIS KEVIN
 					
 				}
 				
 				else if(process.currentState == "blocked") {
 					
 					number = process.blocked;
+					process.blocked--; //MIGHT NEED TO DELETE THIS KEVIN
 					
 				}
 				
