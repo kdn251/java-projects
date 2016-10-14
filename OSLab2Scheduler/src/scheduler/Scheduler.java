@@ -89,13 +89,13 @@ public class Scheduler {
 		firstComeFirstServed(processesFirstComeFirstServed, randomOSScannerFirstComeFirstServed);
 				
 		//run uniprogrammed scheduling algorithm on all processes
-		//uniprogrammed(processesUniprogrammed, randomOSScannerUniprogrammed);
+		uniprogrammed(processesUniprogrammed, randomOSScannerUniprogrammed);
 		
 		//run round robin scheduling algorithm on all processes
-		//roundRobin(processesRoundRobin, randomOSScannerRoundRobin);
+		roundRobin(processesRoundRobin, randomOSScannerRoundRobin);
 		
 		//run shortest job first scheduling algorithm on all processes
-		//shortestJobFirst(processesShortestJobFirst, randomOSScannerShortestJobFirst);
+		shortestJobFirst(processesShortestJobFirst, randomOSScannerShortestJobFirst);
 	
 	}
 	
@@ -122,6 +122,10 @@ public class Scheduler {
 		System.out.println();
 		
 		if(VERBOSE_FLAG) {
+			
+			System.out.println("This detailed printout gives the state and remaining burst for each process");
+			
+			System.out.println();
 		
 			printVerbose(count, processes);
 			count++;
@@ -159,12 +163,15 @@ public class Scheduler {
 				
 				currentProcess.burst = burst;
 				
-				if(VERBOSE_FLAG) {
+				for(int i = 0; i < burst; i++) { //MIGHT NEED TO DELETE THIS LOOP!
+					
+					if(VERBOSE_FLAG) {
 
-					printVerbose(count, processes);
-					count++;
+						printVerbose(count, processes);
+						count++;
 
-
+					}
+					
 				}
 								
 				//if the burst is greater than remaining cpu time set burst equal to remaining cpu time
@@ -245,7 +252,7 @@ public class Scheduler {
 											
 						ready.add(process);
 						process.finishingTime = totalRunTime;
-						process.waitingTime = totalRunTime - process.arrivalTime; //BUG: if process arrives while a process is running, set it's waiting time accordingly
+						process.waitingTime = totalRunTime - process.arrivalTime; 
 						process.added = true;
 						process.currentState = "ready";
 												
@@ -390,7 +397,13 @@ public class Scheduler {
 		
 		if(VERBOSE_FLAG) {
 			
+			System.out.println("This detailed printout gives the state and remaining burst for each process");
+			
+			System.out.println();
+
 			printVerbose(count, processes);
+			
+			count++;
 			
 		}	
 		
@@ -426,12 +439,16 @@ public class Scheduler {
 				
 				currentProcess.burst = burst;
 
-				if(VERBOSE_FLAG) {
+				for(int i = 0; i < burst; i++) { //MIGHT NEED TO DELETE THIS LOOP!
+					
+					if(VERBOSE_FLAG) {
+						
+						printVerbose(count, processes);
+						
+						count++;
 
-					count++;
-
-					printVerbose(count, processes);
-
+					}
+					
 				}
 								
 				//if the burst is greater than remaining cpu time set burst equal to remaining cpu time
@@ -507,9 +524,13 @@ public class Scheduler {
 					
 					if(VERBOSE_FLAG) {
 
-						count++;
-
-						printVerbose(count, processes);
+						for(int i = 0; i < currentProcess.inputOutputTime; i++) {
+							
+							printVerbose(count, processes);
+							
+							count++;
+							
+						}
 
 					}
 										
@@ -526,6 +547,7 @@ public class Scheduler {
 						
 						process.finishingTime += currentProcess.inputOutputTime;
 						process.waitingTime += currentProcess.inputOutputTime;
+						process.currentState = "ready";
 						
 					}
 									
@@ -572,8 +594,12 @@ public class Scheduler {
 				
 		if(VERBOSE_FLAG) {
 		
+			System.out.println("This detailed printout gives the state and remaining burst for each process");
+			
+			System.out.println();
+
 			printVerbose(count, processes);
-		
+					
 		}
 		
 		//if any process has the same arrival time as the first process add it to ready
@@ -604,17 +630,7 @@ public class Scheduler {
 				currentProcess.currentState = "running";
 								
 				int burst = randomOS(currentProcess.cpuBurst, randomOSScanner);
-				
-				currentProcess.burst = burst;
-				
-				if(VERBOSE_FLAG) {
-
-					count++;
-
-					printVerbose(count, processes);
-
-				}
-								
+												
 				//if the burst is greater than remaining cpu time set burst equal to remaining cpu time
 				if(burst > QUANTUM) {
 					
@@ -625,6 +641,20 @@ public class Scheduler {
 				if(burst > currentProcess.cpuTime) {
 										
 					burst = currentProcess.cpuTime;
+					
+				}
+				
+				currentProcess.burst = burst;
+								
+				for(int i = 0; i < burst; i++) { //MIGHT NEED TO DELETE THIS LOOP!
+					
+					if(VERBOSE_FLAG) {
+
+						count++;
+						
+						printVerbose(count, processes);
+
+					}
 					
 				}
 				
@@ -841,8 +871,14 @@ public class Scheduler {
 		System.out.println();
 		
 		if(VERBOSE_FLAG) {
+			
+			System.out.println("This detailed printout gives the state and remaining burst for each process");
+			
+			System.out.println();
 		
 			printVerbose(count, processes);
+			
+			count++;
 		
 		}
 		
@@ -892,12 +928,15 @@ public class Scheduler {
 				
 				currentProcess.burst = burst;
 				
-				if(VERBOSE_FLAG) {
+				for(int i = 0; i < burst; i++) { //MIGHT NEED TO DELETE THIS LOOP!
+					
+					if(VERBOSE_FLAG) {
 
-					count++;
+						printVerbose(count, processes);
+						count++;
 
-					printVerbose(count, processes);
-
+					}
+					
 				}
 								
 				//if the burst is greater than remaining cpu time set burst equal to remaining cpu time
@@ -909,8 +948,6 @@ public class Scheduler {
 				
 				//decrement current processes' required cpu time by its current cpu burst
 				currentProcess.cpuTime -= burst;
-				
-
 				
 				//increment current process' finishing time
 				currentProcess.finishingTime += burst;
@@ -1038,9 +1075,9 @@ public class Scheduler {
 				
 				if(VERBOSE_FLAG) {
 
-					count++;
-
 					printVerbose(count, processes);
+					
+					count++;
 
 				}
 				
@@ -1170,6 +1207,7 @@ public class Scheduler {
 					
 					number = 0;
 					
+					
 				}
 				
 				else if(process.currentState == "ready") {
@@ -1188,7 +1226,19 @@ public class Scheduler {
 				else if(process.currentState == "blocked") {
 					
 					number = process.blocked;
-					process.blocked--; //MIGHT NEED TO DELETE THIS KEVIN
+					
+					if(process.blocked != -1) {
+						
+						process.blocked--; //MIGHT NEED TO DELETE THIS KEVIN
+						
+					}
+					
+					if(process.blocked == -1) {
+						
+						process.currentState = "ready";
+						number = 0;
+						
+					}
 					
 				}
 				
@@ -1198,7 +1248,7 @@ public class Scheduler {
 					
 				}
 				
-				System.out.print(String.format("%10s", process.currentState) + " " + number + " ");
+				System.out.print(String.format("%10s", process.currentState) + "   " + number + "  ");
 
 			}
 			
