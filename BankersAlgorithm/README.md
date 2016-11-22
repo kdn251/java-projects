@@ -15,3 +15,8 @@ EXAMPLE
 RUN
 javac bankersAlgorithm/BankersAlgorithm.java
 java bankersAlgorithm.BankersAlgorithm kdn251/input1.txt
+
+ARBITRARY LIMITS
+Tasks <= 10
+Activities <= 30
+Resource Types <= 10

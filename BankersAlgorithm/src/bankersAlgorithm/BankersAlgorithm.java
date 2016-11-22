@@ -524,12 +524,23 @@ public class BankersAlgorithm {
         // initialize size of resource's array
         resources = new int[NUMBER_OF_RESOURCE_TYPES];
 
+        //check arbitrary limits
+        if(NUMBER_OF_TASKS > 10 || NUMBER_OF_RESOURCE_TYPES > 10) {
+
+            System.out.println("Input file does not adhere to the arbitrary limits.");
+            System.exit(-1);
+
+        }
+
         // initialize number of all resource types
         for (int i = 0; i < resources.length; i++) {
 
             resources[i] = Integer.parseInt(scanner.next());
 
         }
+
+        //keep track of the number of activites
+        int numberOfActivities = 0;
 
         // initialize each process object
         while (scanner.hasNext()) {
@@ -551,6 +562,17 @@ public class BankersAlgorithm {
             }
 
             processes.get(processNumber - 1).activities.add(currentActivity);
+
+            //increment the number of activites
+            numberOfActivities++;
+
+        }
+
+        //check arbitrary limits
+        if(numberOfActivities > 30) {
+
+            System.out.println("Input file does not adhere to arbitrary limits.");
+            System.exit(-1);
 
         }
 
