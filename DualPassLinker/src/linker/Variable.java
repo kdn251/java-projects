@@ -1,9 +1,7 @@
 /* @author: Kevin Naughton Jr. */
-
 package linker;
 
 public class Variable {
-
 	//store the module's symbol
 	protected String symbol = "";
 	
@@ -18,35 +16,21 @@ public class Variable {
 	
 	//handles error where current variable is defined but not used
 	protected boolean definedButNotUsed = false;
-		
 	
 	public Variable() {
-		
 		//default constructor
-		
 	}
-	
 	
 	public Variable(String symbol, int symbolLocation) {
-		
 		this.symbol = symbol;
-		
 		this.symbolLocation = symbolLocation;
-		
 	}
-	
 	
 	public String getSymbol() {
-		
 		return this.symbol;
-		
 	}
-	
 	
 	public int getSymbolLocation() {
-		
 		return this.symbolLocation;
-		
 	}
-	
 }

@@ -5,7 +5,6 @@ package linker;
 import java.util.ArrayList;
 
 public class Module {
-
 	//store array list of variable objects
 	protected ArrayList<Variable> allVariables = new ArrayList<Variable>();
 	
@@ -27,31 +26,19 @@ public class Module {
 	//store the module's base address
 	private int baseAddress = 0; 
 	
-	
 	public Module() {
-		
 		//default constructor
-		
 	}
 	
 	public ArrayList<String> getUses() {
-		
 		return this.uses;
-		
 	}
+
 	public void setBaseAddress(int baseAddress){
-		
 		this.baseAddress = baseAddress;
-		
 	}
+
 	public int getBaseAddress(){
-		
 		return this.baseAddress;
-		
 	}
-
-
-	
-	
-	
 }
